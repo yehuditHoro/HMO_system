@@ -1,0 +1,66 @@
+create database if not exists covid_database;
+use covid_database;
+
+
+-- יצירת טבלת חברי קופה
+CREATE TABLE members (
+  -- id INT NOT NULL AUTO_INCREMENT,
+  member_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  phone_number VARCHAR(255) NOT NULL,
+  mobile_number VARCHAR(255) NOT NULL,
+  PRIMARY KEY (member_id)
+);
+
+-- יצירת טבלת יצרנים
+CREATE TABLE manufacturers (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- יצירת טבלת חיסונים
+CREATE TABLE vaccines (
+    id INT NOT NULL AUTO_INCREMENT,
+    member_id INT NOT NULL,  
+    vac_date DATE NOT NULL,
+    manufacturer_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) REFERENCES members (member_id),
+    FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)
+);
+
+
+
+-- יצירת טבלת מידע על קורונה
+CREATE TABLE corona_info (
+  member_id INT NOT NULL,
+  sick_date DATE,
+  recovery_date DATE,
+  primary key (member_id),
+  FOREIGN KEY (member_id) REFERENCES members (member_id)
+);
+
+-- הוספת יצרנים
+INSERT INTO manufacturers (name) VALUES ('Pfizer'), ('Moderna'), ('AstraZeneca');
+
+-- הוספת חברי קופה
+INSERT INTO members (name, member_id, address, phone_number, mobile_number)
+VALUES 	('noa levi', 123456789, 'hatan', '0501234567', '0523456789'),
+		('shir cohen', 951623847, 'yoyo', '0501234567', '0523456789'),
+		('yehudit hok', 142753869, 'joj', '0501234567', '0523456789'),
+       ('John Doe', 888555222, '123 Main St', '555-555-1212', '222-333-4444'),
+       ('Jane Smith', 951951951, '456 Elm St', '555-555-5656', '111-222-3333'),
+		('שם מלא 2', 987654321, 'shamger', '0541234567', '0553456789');
+
+-- הוספת חיסונים
+INSERT INTO vaccines (member_id, vac_date, manufacturer_id)
+VALUES (123456789, '2023-11-15', 1),
+       (123456789, '2023-12-01', 2),
+       (951951951, '2023-11-20', 1);
+
+-- הוספת מידע על קורונה
+INSERT INTO corona_info (member_id, sick_date, recovery_date)
+VALUES (123456789, '2023-11-25', '2023-12-01'),
+       (987654321, '2023-11-03', '2023-12-01');
